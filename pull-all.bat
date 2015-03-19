@@ -5,6 +5,16 @@ setlocal EnableDelayedExpansion
 REM Iterates through sub directories and performs git status and pull (with prune)
 REM Author: Stewart Bonnick (stewart.bonnick@autoclavestudios.com)
 
+set incIgnore=0
+
+:parse
+IF "%~1"=="" GOTO endparse
+IF "%~1"=="-i" set incIgnore=1
+IF "%~1"=="--ignore" set incIgnore=1
+SHIFT
+GOTO parse
+:endparse
+
 echo.
 echo --------------------------------------------------------------------------------
 FOR /D %%i in (*) DO (
@@ -21,6 +31,13 @@ FOR /D %%i in (*) DO (
 		echo.
 		git -C %%i status -s
 		echo.
+		if !incIgnore! EQU 1 (
+			call :color 03 "+++ Ignored Files"
+			echo.
+			echo.
+			git -C %%i status -s --ignored
+			echo.
+		)
 		call :color 03 "+++ Pull"
 		echo.
 		echo.
