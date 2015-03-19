@@ -3,6 +3,8 @@ call :color_init
 setlocal EnableDelayedExpansion
 
 REM Iterates through sub directories and performs git status and pull (with prune)
+REM Author: Stewart Bonnick (stewart.bonnick@autoclavestudios.com)
+
 echo.
 echo --------------------------------------------------------------------------------
 FOR /D %%i in (*) DO (
@@ -43,6 +45,9 @@ set /p remote=<temp_remote.txt
 DEL temp_remote.txt
 exit /b
 
+
+REM Below code or ideas are derived from various other peoples work. Originators are unknown -
+REM as there are different flavours of the same snippets. All licences however are MIT or Apache 2.0
 
 :color_init
 for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do (
