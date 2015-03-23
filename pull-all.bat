@@ -26,21 +26,16 @@ GOTO parse
 ::-----------------------------------------------------------------------
 
 echo.
-echo --------------------------------------------------------------------------------
-FOR /D %%i in (*) DO (
-	set name= %%i                                       
-	call :detect_remote %%i
-	set remote=                                       !remote! 
-	call :color 0a "!name:~0,40!"
-	echo !remote:~-40!
-	echo --------------------------------------------------------------------------------
+FOR /D %%f in (*) DO (
+	set name= %%f                                       
+	call :detect_remote %%f
+	call :format_title %%f !remote! 80
 	IF !isGit! EQU 1 (
-		call :get_status %%i
-		call :get_status %%i !incIgnore!
-		call :get_pull %%i
+		call :get_status %%f "Status"
+		call :get_status %%f "Ignored Files" !incIgnore!
+		call :get_pull %%f
 	)
 	echo.
-	echo --------------------------------------------------------------------------------
 )
 call :color_dispose
 exit /b
@@ -62,19 +57,15 @@ set /p remote=<temp_remote.txt
 DEL temp_remote.txt
 exit /b
 
-:get_status -- <Folder> <Include Ignore Print>
-set exe=git -C %~1 status -s
-set label="Status"
-IF [%~2] == [0] ( exit /b )
-IF [%~2] == [1]  (
-	set exe=git -C %~1 status -s --ignored
-	set label="Ignored Files"
-)
-!exe! > temp_status.txt
+:get_status -- <Folder> <Label> <Include Ignore Print>
+set status=git -C %~1 status -s
+IF [%~3] == [0] ( exit /b )
+IF [%~3] == [1] ( set exe=!status! --ignored )
+!status! > temp_status.txt
 for /f %%t in ("temp_status.txt") do set size=%%~zt
 if !size! GTR 0 (
-	call :format_label !label!
-	!exe!
+	call :format_label %~2
+	!status!
 )
 DEL temp_status.txt
 exit /b
@@ -91,6 +82,20 @@ echo.
 echo.
 exit /b
 
+:format_title -- <Title> <Caption> <Width>
+set box=
+set spaces=
+FOR /L %%c IN (1,1,%~3) DO ( 
+	set box=!box!-
+	set spaces=!spaces! 
+)
+set temp_title= %~1 !spaces!
+set temp_caption=!spaces! %~2 
+echo.!box!
+call :color 0a "!temp_title:~0,40!"
+echo !temp_caption:~-40!
+echo.!box!
+exit /b
 
 :: Below code or ideas are derived from various other peoples work. Originators are unknown -
 :: as there are different flavours of the same snippets. All licences however are MIT or Apache 2.0
