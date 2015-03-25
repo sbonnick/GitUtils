@@ -3,8 +3,10 @@ Misc. Git utilities to simplify working in Git targeting large projects spanning
 
 ## pull-all
 
+```
 Usage: pull-all [-i]
 -i : include listing ignored files of a project
+```
 
 This is a simple tool that will iterate over all the files in the current directory performing the following tasks:
 
@@ -14,3 +16,12 @@ This is a simple tool that will iterate over all the files in the current direct
   3. execute a pull with pruning on the given Git project
   
 This tool is ideal for larger projects that are spread across multiple Git repositories and cloned locally in the same "working" folder
+
+## pull
+
+```
+Usage: pull [i]
+-i : include listing ignored files of a project
+```
+
+This is a simple tool that will perform a pull on the local repository while also displaying some other helpful information.

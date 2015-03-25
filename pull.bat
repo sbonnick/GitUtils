@@ -4,7 +4,7 @@ set formatlib=%~dp0lib\formatlib.bat
 set gitlib=%~dp0lib\gitlib.bat
 
 
-:: Iterates through sub directories and performs git status and pull (with prune)
+:: Performs git status and pull (with prune) on current directory
 :: Author: Stewart Bonnick (stewart.bonnick@autoclavestudios.com)
 
 
@@ -28,15 +28,13 @@ GOTO parse
 ::-----------------------------------------------------------------------
 
 echo.
-FOR /D %%f in (*) DO (
-	set name= %%f                                       
-	call %gitlib% :detect_remote "%%f" remote
-	call %formatlib% :format_title "%%f" "!remote!" 80
-	IF !isGit! EQU 1 (
-		call %gitlib% :get_status %%f "Status"
-		call %gitlib% :get_status %%f "Ignored Files" !incIgnore!
-		call %gitlib% :get_pull %%f
-	)
-	echo.
+for %%* in (.) do (set name=%%~n*)
+call %gitlib% :detect_remote "%cd%" remote
+call %formatlib% :format_title "!name!" "!remote!" 80
+IF !isGit! EQU 1 (
+    call %gitlib% :get_status %cd% "Status"
+    call %gitlib% :get_status %cd% "Ignored Files" !incIgnore!
+    call %gitlib% :get_pull %cd%
 )
+echo.
 exit /b
