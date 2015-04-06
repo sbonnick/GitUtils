@@ -25,3 +25,12 @@ Usage: pull [i]
 ```
 
 This is a simple tool that will perform a pull on the local repository while also displaying some other helpful information.
+
+## branch
+
+```
+Usage: branch <name>
+name : the name of the new branch to be created
+```
+
+This is a simple tool which will create a new local branch, switch to it and then create it (same name) on remote origin.

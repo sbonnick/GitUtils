@@ -42,3 +42,13 @@ exit /b
 call %formatlib% :format_label "Pull"
 git -C %~1 pull --prune
 exit /b
+
+:get_checkout -- <Folder> <branch>
+call %formatlib% :format_label "Checkout"
+git -C %~1 checkout -b %~2
+exit /b
+
+:get_push -- <Folder> <branch>
+call %formatlib% :format_label "Push"
+git -C %~1 push -u origin %~2
+exit /b
