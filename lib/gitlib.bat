@@ -23,6 +23,20 @@ set /p %~2=<%TEMP%\temp_remote.txt
 DEL %TEMP%\temp_remote.txt
 exit /b
 
+:detect_update -- <Folder> <Variable>
+git -C %~1 fetch > %TEMP%\fetch.txt
+git -C %~1 rev-parse @ > %TEMP%\localHash.txt
+git -C %~1 rev-parse @{u} > %TEMP%\remoteHash.txt
+set /p localhash=<%TEMP%\localHash.txt
+set /p remotehash=<%TEMP%\remoteHash.txt
+set %~2=1
+IF !localhash!==!remotehash! (set %~2=0)
+echo !%~2! : !localhash! ^<----^> !remotehash!
+DEL %TEMP%\fetch.txt
+DEL %TEMP%\localHash.txt
+DEL %TEMP%\remoteHash.txt
+exit /b
+
 :get_status -- <Folder> <Label> <Include Ignore Print>
 setlocal EnableDelayedExpansion
 set status=git -C %~1 status -s

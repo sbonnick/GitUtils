@@ -26,8 +26,8 @@ FOR /L %%c IN (1,1,%~3) DO (
 set temp_title= %~1 !spaces!
 set temp_caption=!spaces! %~2!space!
 echo.!box!
-call :color 0a "!temp_title:~0,40!"
-echo !temp_caption:~-40!
+call :color 0a "!temp_title:~0,30!"
+echo !temp_caption:~-50!
 echo.!box!
 endlocal
 exit /b
