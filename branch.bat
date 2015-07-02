@@ -21,6 +21,12 @@ SHIFT
 GOTO parse
 :endparse
 
+IF [!branch!] == [] (
+	echo. 
+    echo. Incorrect parameters
+	echo.   Usage: branch [Branch Name]
+	exit /b
+)
 
 ::-----------------------------------------------------------------------
 ::|                          Main Code                                  |
