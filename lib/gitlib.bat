@@ -39,14 +39,14 @@ exit /b
 
 :get_status -- <Folder> <Label> <Include Ignore Print>
 setlocal EnableDelayedExpansion
-set status=git -C %~1 status -s
+set exe=git -C %~1 status -s
 IF [%~3] == [0] ( exit /b )
-IF [%~3] == [1] ( set exe=!status! --ignored )
-!status! > %TEMP%\temp_status.txt
+IF [%~3] == [1] ( set exe=!exe! --ignored )
+!exe! > %TEMP%\temp_status.txt
 for /f %%t in ("%TEMP%\temp_status.txt") do set size=%%~zt
 if !size! GTR 0 (
 	call %formatlib% :format_label %~2
-	!status!
+	!exe!
 )
 DEL %TEMP%\temp_status.txt
 endlocal
