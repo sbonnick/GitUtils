@@ -57,6 +57,11 @@ call %formatlib% :format_label "Pull"
 git -C %~1 pull --prune
 exit /b
 
+:get_clean -- <Folder>
+call %formatlib% :format_label "Clean"
+git -C %~1 clean -xdf
+exit /b
+
 :get_checkout -- <Folder> <branch>
 call %formatlib% :format_label "Checkout"
 git -C %~1 checkout -b %~2
@@ -65,4 +70,9 @@ exit /b
 :get_push -- <Folder> <branch>
 call %formatlib% :format_label "Push"
 git -C %~1 push -u origin %~2
+exit /b
+
+:get_remove_branch -- <Folder> <branch>
+call %formatlib% :format_label "Remove Branch"
+git -C %~1 branch -d %~2
 exit /b

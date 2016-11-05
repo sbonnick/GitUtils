@@ -12,11 +12,14 @@ set gitlib=%~dp0lib\gitlib.bat
 ::|                          Parameters                                 |
 ::-----------------------------------------------------------------------
 
-set incIgnore=0
+
+set remove=0
 
 :parse
-IF [%~1] == [] GOTO endparse
-IF not [%~1] == [] set branch=%~1
+IF "%~1"=="" GOTO endparse
+IF "%~1"=="-r" set remove=1
+IF "%~1"=="--remove" set remove=1
+IF not "%~1"=="" set branch=%~1
 SHIFT
 GOTO parse
 :endparse
@@ -24,7 +27,7 @@ GOTO parse
 IF [!branch!] == [] (
 	echo. 
     echo. Incorrect parameters
-	echo.   Usage: branch [Branch Name]
+	echo.   Usage: branch [Branch Name] [--remove|-r]
 	exit /b
 )
 
@@ -37,8 +40,13 @@ for %%* in (.) do (set name=%%~n*)
 call %gitlib% :detect_remote "%cd%" remote
 call %formatlib% :format_title "!name!" "!remote!" 80
 IF !isGit! EQU 1 (
-	call %gitlib% :get_checkout %cd% !branch!
-	call %gitlib% :get_push %cd% !branch!
+    IF [!remove!] == [0] ( 
+        call %gitlib% :get_checkout %cd% !branch!
+        call %gitlib% :get_push %cd% !branch!
+    )
+    IF [!remove!] == [1] ( 
+        echo "remove not yet implemented"
+    )
 )
 echo.
 call %gitlib% :detect_remote "%cd%" remote
