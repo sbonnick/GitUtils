@@ -45,7 +45,9 @@ IF !isGit! EQU 1 (
         call %gitlib% :get_push %cd% !branch!
     )
     IF [!remove!] == [1] ( 
-        echo "remove not yet implemented"
+        call %gitlib% :get_checkout %cd% "master"
+        call %gitlib% :get_pull %cd% "master"
+        call %gitlib% get_remove_branch %cd% !branch!
     )
 )
 echo.
